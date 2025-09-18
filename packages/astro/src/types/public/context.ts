@@ -214,6 +214,8 @@ type MarkdownFileExtension = (typeof SUPPORTED_MARKDOWN_FILE_EXTENSIONS)[number]
 export interface AstroGlobalPartial {
 	/**
 	 * Fetch local files into your static site setup
+	 * 
+	 * TODO: remove this
 	 *
 	 * Example usage:
 	 * ```typescript
