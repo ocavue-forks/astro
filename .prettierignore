@@ -9,6 +9,7 @@ benchmark/results/
 **/fixtures
 **/vendor
 **/.vercel
+**/hello-world-test
 
 # Short-term need to format
 !packages/db/test/fixtures
