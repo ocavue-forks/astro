@@ -18,6 +18,8 @@
 
 ## Install
 
+TEST CI
+
 The **recommended** way to install the latest version of Astro is by running the command below:
 
 ```bash
