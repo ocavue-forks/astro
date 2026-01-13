@@ -58,7 +58,7 @@ type TSConfigResult<T = object> = Promise<
 >;
 
 /**
- * Load a tsconfig.json or jsconfig.json is the former is not found
+ * Load a tsconfig.json or jsconfig.json is the former is not found.
  * @param root The root directory to search in, defaults to `process.cwd()`.
  * @param findUp Whether to search for the config file in parent directories, by default only the root directory is searched.
  */
