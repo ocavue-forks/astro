@@ -12,19 +12,28 @@ describe('Svelte', () => {
 	let previewServer;
 
 	async function fixtureBuild() {
+		console.log(`[fixtureBuild] start`);
 		let err;
 		for (let attempt = 1; attempt <= 3; attempt++) {
+			console.log(`[fixtureBuild] attempt: ${attempt}`);
 			try {
+				console.log(`[fixtureBuild] before build attempt ${attempt}`);
 				await fixture.build({});
+				console.log(`[fixtureBuild] after build attempt ${attempt}`);
 				return;
 			} catch (error) {
-				console.error(`Unable to build fixture for the attempt ${attempt}`, error);
+				console.log(`[fixtureBuild] catch error`);
+				console.error(`Unable to build fixture for the attempt ${attempt}:`, error);
 				err = new Error(`Unable to build fixture: ${error}`, { cause: error });
+				console.log(`[fixtureBuild] after catch error`);
 			}
 		}
+		console.log(`[fixtureBuild] after for loop`);
 		if (err) {
+			console.log(`[fixtureBuild] before throw err`);
 			throw err;
 		}
+		console.log(`[fixtureBuild] after throw err`);
 	}
 
 	before(async () => {
