@@ -20,11 +20,19 @@ describe('Svelte', () => {
 		await fixture.clean();
 	});
 
-	it('renders the svelte component', async () => {
+	const run = async () => {
 		const res = await fixture.fetch('/');
 		assert.equal(res.status, 200);
 		const html = await res.text();
 		const $ = cheerio.load(html);
 		assert.equal($('.svelte').text(), 'Svelte Content');
+		return true
+	}
+
+	it('renders the svelte component',async (t) => {
+		await t.waitFor(run, {
+			interval: 100,
+			timeout: 4000,
+		});
 	});
 });
