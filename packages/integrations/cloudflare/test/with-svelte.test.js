@@ -18,7 +18,14 @@ describe('Svelte', () => {
 		});
 		console.log('after loadFixture');
 		console.log('before build');
-		await fixture.build({});
+		try {
+			console.log('before build try');
+			await fixture.build({});
+			console.log('after build try');
+		} catch (error) {
+			console.error('Unable to build fixture', error);
+			throw error;
+		}
 		console.log('after build');
 		console.log('before preview');
 		previewServer = await fixture.preview({});
