@@ -6,8 +6,8 @@ import type { Plugin } from 'vite';
 function getRenderer(): AstroRenderer {
 	return {
 		name: '@astrojs/svelte',
-		clientEntrypoint: '@astrojs/svelte/client.js',
 		serverEntrypoint: '@astrojs/svelte/server.js',
+		clientEntrypoint: '@astrojs/svelte/client.js',
 	};
 }
 
