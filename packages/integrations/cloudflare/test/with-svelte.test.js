@@ -25,11 +25,12 @@ describe('Svelte', () => {
 		assert.equal(res.status, 200);
 		const html = await res.text();
 		const $ = cheerio.load(html);
-		assert.equal($('.svelte').text(), 'Svelte Content');
-		return true
-	}
+		const message = `Expected 'Svelte Content', but received the following HTML: ${html}`;
+		assert.equal($('.svelte').text(), 'Svelte Content', message);
+		return true;
+	};
 
-	it('renders the svelte component',async (t) => {
+	it('renders the svelte component', async (t) => {
 		await t.waitFor(run, {
 			interval: 100,
 			timeout: 4000,
