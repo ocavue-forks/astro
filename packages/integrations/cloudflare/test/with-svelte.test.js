@@ -11,6 +11,22 @@ describe('Svelte', () => {
 	/** @type {import('../../../astro/test/test-utils.js').PreviewServer} */
 	let previewServer;
 
+	async function fixtureBuild() {
+		let err;
+		for (let attempt = 1; attempt <= 3; attempt++) {
+			try {
+				await fixture.build({});
+				return;
+			} catch (error) {
+				console.error(`Unable to build fixture for the attempt ${attempt}`, error);
+				err = new Error(`Unable to build fixture: ${error}`, { cause: error });
+			}
+		}
+		if (err) {
+			throw err;
+		}
+	}
+
 	before(async () => {
 		console.log('before');
 		fixture = await loadFixture({
@@ -18,14 +34,7 @@ describe('Svelte', () => {
 		});
 		console.log('after loadFixture');
 		console.log('before build');
-		try {
-			console.log('before build try');
-			await fixture.build({});
-			console.log('after build try');
-		} catch (error) {
-			console.error('Unable to build fixture', error);
-			throw error;
-		}
+		await fixtureBuild();
 		console.log('after build');
 		console.log('before preview');
 		previewServer = await fixture.preview({});
