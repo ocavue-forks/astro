@@ -36,7 +36,7 @@ describe('Svelte', () => {
 		async () => {
 			console.log('before stop', previewServer);
 			console.log('before stop', previewServer.stop);
-			await previewServer.stop();
+			await previewServer?.stop();
 			console.log('after stop');
 			try {
 				console.log('before closed');
@@ -47,7 +47,7 @@ describe('Svelte', () => {
 				throw error;
 			}
 			console.log('before clean');
-			await fixture.clean();
+			await fixture?.clean();
 			console.log('after clean');
 		},
 		{
