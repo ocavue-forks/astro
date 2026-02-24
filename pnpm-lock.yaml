@@ -577,6 +577,9 @@ importers:
       fontace:
         specifier: ~0.4.1
         version: 0.4.1
+      get-tsconfig:
+        specifier: ^4.13.6
+        version: 4.13.6
       github-slugger:
         specifier: ^2.0.0
         version: 2.0.0
@@ -589,6 +592,9 @@ importers:
       js-yaml:
         specifier: ^4.1.1
         version: 4.1.1
+      jsonc-parser:
+        specifier: ^3.3.1
+        version: 3.3.1
       magic-string:
         specifier: ^0.30.21
         version: 0.30.21
@@ -640,9 +646,6 @@ importers:
       tinyglobby:
         specifier: ^0.2.15
         version: 0.2.15
-      tsconfck:
-        specifier: ^3.1.6
-        version: 3.1.6(typescript@5.9.3)
       ultrahtml:
         specifier: ^1.6.0
         version: 1.6.0
@@ -7061,6 +7064,9 @@ importers:
       esbuild:
         specifier: ^0.25.0
         version: 0.25.5
+      jsonc-parser:
+        specifier: ^3.3.1
+        version: 3.3.1
       p-limit:
         specifier: ^7.3.0
         version: 7.3.0
@@ -7070,9 +7076,6 @@ importers:
       tinyglobby:
         specifier: ^0.2.15
         version: 0.2.15
-      tsconfck:
-        specifier: ^3.1.6
-        version: 3.1.6(typescript@5.9.3)
 
 packages:
 
@@ -12434,6 +12437,9 @@ packages:
   get-tsconfig@4.13.6:
     resolution: {integrity: sha512-shZT/QMiSHc/YBLxxOkMtgSid5HFoauqCE3/exfsEcwg1WkeqjG+V40yBbBrsD+jW2HDXcs28xOfcbm2jI8Ddw==}
 
+  get-tsconfig@4.13.6:
+    resolution: {integrity: sha512-shZT/QMiSHc/YBLxxOkMtgSid5HFoauqCE3/exfsEcwg1WkeqjG+V40yBbBrsD+jW2HDXcs28xOfcbm2jI8Ddw==}
+
   github-from-package@0.0.0:
     resolution: {integrity: sha512-SyHy3T1v2NUXn29OsWdxmK6RwHD+vkj3v8en8AOBZ1wBQ/hCAQ5bAQTD02kW4W9tUp/3Qh6J8r9EvntiyCmOOw==}
 
@@ -15313,16 +15319,6 @@ packages:
     engines: {node: '>=18.12'}
     peerDependencies:
       typescript: '>=4.8.4'
-
-  tsconfck@3.1.6:
-    resolution: {integrity: sha512-ks6Vjr/jEw0P1gmOVwutM3B7fWxoWBL2KRDb1JfqGVawBmO5UsvmWOQFGHBPl5yxYz4eERr19E6L7NMv+Fej4w==}
-    engines: {node: ^18 || >=20}
-    hasBin: true
-    peerDependencies:
-      typescript: ^5.0.0
-    peerDependenciesMeta:
-      typescript:
-        optional: true
 
   tslib@2.1.0:
     resolution: {integrity: sha512-hcVC3wYEziELGGmEEXue7D75zbwIIVUMWAVbHItGPx0ziyXxrOMQx4rQEVEV45Ut/1IotuEvwqPopzIOkDMf0A==}
@@ -21945,6 +21941,10 @@ snapshots:
     dependencies:
       resolve-pkg-maps: 1.0.0
 
+  get-tsconfig@4.13.6:
+    dependencies:
+      resolve-pkg-maps: 1.0.0
+
   github-from-package@0.0.0:
     optional: true
 
@@ -25526,10 +25526,6 @@ snapshots:
 
   ts-api-utils@2.4.0(typescript@5.9.3):
     dependencies:
-      typescript: 5.9.3
-
-  tsconfck@3.1.6(typescript@5.9.3):
-    optionalDependencies:
       typescript: 5.9.3
 
   tslib@2.1.0: {}
