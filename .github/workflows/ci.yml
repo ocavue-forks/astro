@@ -198,6 +198,18 @@ jobs:
         run: |
           git branch
 
+      - name: Add main branch 
+        run: git branch -u origin/main main || echo "Main branch already set"
+
+      - name: Debug current git status v2
+        run: |
+          git status
+
+      - name: Debug current git branch v2
+        run: |
+          git branch
+        
+
       - name: Build Packages
         run: pnpm run build
 
