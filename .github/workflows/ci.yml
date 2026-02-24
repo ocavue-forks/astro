@@ -190,6 +190,14 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
+      - name: Debug current git status
+        run: |
+          git status
+
+      - name: Debug current git branch
+        run: |
+          git branch
+
       - name: Build Packages
         run: pnpm run build
 
