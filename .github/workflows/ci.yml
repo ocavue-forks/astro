@@ -85,6 +85,14 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
+      - name: Debug current git status
+        run: |
+          git status
+
+      - name: Debug current git branch
+        run: |
+          git branch
+
       # Only build in ubuntu as windows can share the build cache.
       # Also only build in core repo as forks don't have access to the Turbo cache.
       - name: Build Packages
