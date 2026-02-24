@@ -199,7 +199,10 @@ jobs:
           git branch
 
       - name: Add main branch 
-        run: git branch -u origin/main main || echo "Main branch already set"
+      
+        run: |
+          git fetch --all || echo "Something went wrong with the git fetch"
+          git branch --track main origin/main || echo "Something went wrong with the git fetch"
 
       - name: Debug current git status v2
         run: |
