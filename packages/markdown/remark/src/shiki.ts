@@ -1,13 +1,16 @@
 import type { Properties, Root } from 'hast';
 import {
+	type BuiltinLanguage,
 	type BundledLanguage,
 	createCssVariablesTheme,
 	createHighlighter,
 	type HighlighterCoreOptions,
 	isSpecialLang,
+	type LanguageInput,
 	type LanguageRegistration,
 	type RegexEngine,
 	type ShikiTransformer,
+	type SpecialLanguage,
 	type ThemeRegistration,
 	type ThemeRegistrationRaw,
 } from 'shiki';
@@ -25,6 +28,13 @@ export interface ShikiHighlighter {
 		lang?: string,
 		options?: ShikiHighlighterHighlightOptions,
 	): Promise<string>;
+}
+
+type ShikiLanguage = LanguageInput | BuiltinLanguage | SpecialLanguage;
+
+interface ShikiHighlighterInternal extends ShikiHighlighter {
+	loadLanguage(...langs: ShikiLanguage[]): Promise<void>;
+	getLoadedLanguages(): string[];
 }
 
 export interface CreateShikiHighlighterOptions {
@@ -71,12 +81,16 @@ const cssVariablesTheme = () =>
 		variablePrefix: '--astro-code-',
 	}));
 
-// Caches Promise<ShikiHighlighter> for reuse when the same `themes` and `langAlias`.
-const cachedHighlighters = new Map<string, Promise<ShikiHighlighter>>();
+// Caches Promise<ShikiHighlighterInternal> for reuse when the same `themes` and `langAlias`.
+const cachedHighlighters = new Map<string, Promise<ShikiHighlighterInternal>>();
 
 export function createShikiHighlighter(
 	options?: CreateShikiHighlighterOptions,
 ): Promise<ShikiHighlighter> {
+	// This function is synchronous but returns a promise. promise. This ensures
+	// that the we won't call `createShikiHighlighterInternal` unnecessarily
+	// when using API like await Promise.all.
+
 	const key: string = JSON.stringify([
 		// Notice that we don't use `langs` in the cache key because we can dynamically
 		// load languages when actually highlighting code.
@@ -86,22 +100,41 @@ export function createShikiHighlighter(
 	]);
 
 	let highlighterPromise = cachedHighlighters.get(key);
-	if (highlighterPromise) {
-		return highlighterPromise;
+	if (!highlighterPromise) {
+		highlighterPromise = createShikiHighlighterInternal(options);
+
+
+		cachedHighlighters.set(key, highlighterPromise);
 	}
-	highlighterPromise = createShikiHighlighterImpl(options);
-	cachedHighlighters.set(key, highlighterPromise);
-	return highlighterPromise;
+	return ensureLanguagesLoaded(highlighterPromise, options?.langs);
 }
 
 let shikiEngine: RegexEngine | undefined = undefined;
 
-async function createShikiHighlighterImpl({
+async function ensureLanguagesLoaded(
+	promise: Promise<ShikiHighlighterInternal>,
+	langs?: ShikiLanguage[],
+): Promise<ShikiHighlighterInternal> {
+	const highlighter = await promise;
+	if (!langs) {
+		return highlighter;
+	}
+	const loadedLanguages = highlighter.getLoadedLanguages();
+	for (const lang of langs) {
+		if (typeof lang === 'string' && (isSpecialLang(lang) || loadedLanguages.includes(lang))) {
+			continue;
+		}
+		await highlighter.loadLanguage(lang);
+	}
+	return highlighter;
+}
+
+async function createShikiHighlighterInternal({
 	langs = [],
 	theme = 'github-dark',
 	themes = {},
 	langAlias = {},
-}: CreateShikiHighlighterOptions = {}): Promise<ShikiHighlighter> {
+}: CreateShikiHighlighterOptions = {}): Promise<ShikiHighlighterInternal> {
 	theme = theme === 'css-variables' ? cssVariablesTheme() : theme;
 
 	if (shikiEngine === undefined) {
@@ -225,6 +258,12 @@ async function createShikiHighlighterImpl({
 		},
 		codeToHtml(code, lang, options = {}) {
 			return highlight(code, lang, options, 'html') as Promise<string>;
+		},
+		loadLanguage(...newLangs) {
+			return highlighter.loadLanguage(...newLangs);
+		},
+		getLoadedLanguages() {
+			return highlighter.getLoadedLanguages();
 		},
 	};
 }
