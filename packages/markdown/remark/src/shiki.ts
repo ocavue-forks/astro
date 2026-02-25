@@ -93,8 +93,9 @@ export function createShikiHighlighter(
 	// bypass the cache and create duplicate highlighters.
 
 	const key: string = JSON.stringify([
-		// Notice that we don't use `langs` in the cache key because we can dynamically
-		// load languages when actually highlighting code.
+		// Notice that we don't use `langs` in the cache key because we can
+		// dynamically load languages. This allows us to reuse the same
+		// highlighter instance for different languages.
 		options?.theme,
 		Object.entries(options?.themes ?? {}).sort(),
 		Object.entries(options?.langAlias ?? {}).sort(),
