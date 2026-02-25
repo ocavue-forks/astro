@@ -87,9 +87,10 @@ const cachedHighlighters = new Map<string, Promise<ShikiHighlighterInternal>>();
 export function createShikiHighlighter(
 	options?: CreateShikiHighlighterOptions,
 ): Promise<ShikiHighlighter> {
-	// This function is synchronous but returns a promise. promise. This ensures
-	// that the we won't call `createShikiHighlighterInternal` unnecessarily
-	// when using API like await Promise.all.
+	// Although this function returns a promise, its body runs synchronously so
+	// that the cache lookup happens immediately. Without this, calling
+	// `Promise.all([createShikiHighlighter(), createShikiHighlighter()])` would
+	// bypass the cache and create duplicate highlighters.
 
 	const key: string = JSON.stringify([
 		// Notice that we don't use `langs` in the cache key because we can dynamically
@@ -102,15 +103,16 @@ export function createShikiHighlighter(
 	let highlighterPromise = cachedHighlighters.get(key);
 	if (!highlighterPromise) {
 		highlighterPromise = createShikiHighlighterInternal(options);
-
-
 		cachedHighlighters.set(key, highlighterPromise);
 	}
 	return ensureLanguagesLoaded(highlighterPromise, options?.langs);
 }
 
-let shikiEngine: RegexEngine | undefined = undefined;
-
+/**
+ * Ensures that the languages are loaded into the highlighter. This is
+ * especially important when the languages are objects representing custom
+ * user-defined languages.
+ */
 async function ensureLanguagesLoaded(
 	promise: Promise<ShikiHighlighterInternal>,
 	langs?: ShikiLanguage[],
@@ -128,6 +130,8 @@ async function ensureLanguagesLoaded(
 	}
 	return highlighter;
 }
+
+let shikiEngine: RegexEngine | undefined = undefined;
 
 async function createShikiHighlighterInternal({
 	langs = [],
