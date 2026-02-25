@@ -1,11 +1,9 @@
 import type { Properties, Root } from 'hast';
 import {
 	type BundledLanguage,
-	type BundledTheme,
 	createCssVariablesTheme,
 	createHighlighter,
 	type HighlighterCoreOptions,
-	type HighlighterGeneric,
 	isSpecialLang,
 	type LanguageRegistration,
 	type RegexEngine,
@@ -73,12 +71,32 @@ const cssVariablesTheme = () =>
 		variablePrefix: '--astro-code-',
 	}));
 
-// Caches Promise<ShikiHighlighter> for reuse when the same theme and langs are provided
-const cachedHighlighters = new Map();
+// Caches Promise<ShikiHighlighter> for reuse when the same `themes` and `langAlias`.
+const cachedHighlighters = new Map<string, Promise<ShikiHighlighter>>();
+
+export function createShikiHighlighter(
+	options?: CreateShikiHighlighterOptions,
+): Promise<ShikiHighlighter> {
+	const key: string = JSON.stringify([
+		// Notice that we don't use `langs` in the cache key because we can dynamically
+		// load languages when actually highlighting code.
+		options?.theme,
+		Object.entries(options?.themes ?? {}).sort(),
+		Object.entries(options?.langAlias ?? {}).sort(),
+	]);
+
+	let highlighterPromise = cachedHighlighters.get(key);
+	if (highlighterPromise) {
+		return highlighterPromise;
+	}
+	highlighterPromise = createShikiHighlighterImpl(options);
+	cachedHighlighters.set(key, highlighterPromise);
+	return highlighterPromise;
+}
 
 let shikiEngine: RegexEngine | undefined = undefined;
 
-export async function createShikiHighlighter({
+async function createShikiHighlighterImpl({
 	langs = [],
 	theme = 'github-dark',
 	themes = {},
@@ -90,24 +108,12 @@ export async function createShikiHighlighter({
 		shikiEngine = await loadShikiEngine();
 	}
 
-	const highlighterOptions = {
+	const highlighter = await createHighlighter({
 		langs: ['plaintext', ...langs],
 		langAlias,
 		themes: Object.values(themes).length ? Object.values(themes) : [theme],
 		engine: shikiEngine,
-	};
-
-	const key = JSON.stringify(highlighterOptions, Object.keys(highlighterOptions).sort());
-
-	let highlighter: HighlighterGeneric<BundledLanguage, BundledTheme>;
-
-	// Highlighter has already been requested, reuse the same instance
-	if (cachedHighlighters.has(key)) {
-		highlighter = cachedHighlighters.get(key);
-	} else {
-		highlighter = await createHighlighter(highlighterOptions);
-		cachedHighlighters.set(key, highlighter);
-	}
+	});
 
 	async function highlight(
 		code: string,
