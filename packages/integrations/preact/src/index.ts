@@ -115,6 +115,7 @@ function configEnvironmentPlugin(compat: boolean | undefined): Plugin {
 			if (environmentName === 'client') {
 				environmentOptions.optimizeDeps!.include = [
 					'@astrojs/preact/client.js',
+					'@rollup/pluginutils',
 					'preact',
 					'preact/jsx-runtime',
 				];
