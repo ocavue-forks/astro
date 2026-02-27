@@ -4,7 +4,6 @@ import { slash as normalizePath } from './path.js';
 
 export type FilterPattern = ReadonlyArray<string | RegExp> | string | RegExp | null;
 
-
 function ensureArray(thing: FilterPattern | undefined): readonly (string | RegExp)[] {
 	if (Array.isArray(thing)) return thing;
 	if (thing == null) return [];
