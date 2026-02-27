@@ -6,7 +6,7 @@ import { getContext } from './context.js';
 import { restoreSignalsOnProps, serializeSignals } from './signals.js';
 import StaticHtml from './static-html.js';
 import type { AstroPreactAttrs, RendererContext } from './types.js';
-import { createFilter } from '@rollup/pluginutils';
+import { createFilter } from '@astrojs/internal-helpers/create-filter';
 
 const slotName = (str: string) => str.trim().replace(/[-_]([a-z])/g, (_, w) => w.toUpperCase());
 
@@ -25,7 +25,7 @@ async function check(
 	if (typeof Component !== 'function') return false;
 	if (Component.name === 'QwikComponent') return false;
 
-	const componentUrl = metadata?.componentUrl
+	const componentUrl = metadata?.componentUrl;
 	if (filter && componentUrl && !filter(componentUrl)) {
 		return false;
 	}

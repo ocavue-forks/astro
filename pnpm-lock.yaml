@@ -6046,15 +6046,15 @@ importers:
 
   packages/integrations/preact:
     dependencies:
+      '@astrojs/internal-helpers':
+        specifier: workspace:*
+        version: link:../../internal-helpers
       '@preact/preset-vite':
         specifier: ^2.10.3
         version: 2.10.3(@babel/core@7.29.0)(preact@10.28.4)(rollup@4.58.0)(vite@7.3.1(@types/node@25.2.3)(jiti@2.6.1)(lightningcss@1.31.1)(sass@1.97.3)(tsx@4.21.0)(yaml@2.8.2))
       '@preact/signals':
         specifier: ^2.8.1
         version: 2.8.1(preact@10.28.4)
-      '@rollup/pluginutils':
-        specifier: ^5.3.0
-        version: 5.3.0(rollup@4.58.0)
       devalue:
         specifier: ^5.6.3
         version: 5.6.3
@@ -6628,7 +6628,14 @@ importers:
         version: 3.5.28(typescript@5.9.3)
 
   packages/internal-helpers:
+    dependencies:
+      picomatch:
+        specifier: ^4.0.3
+        version: 4.0.3
     devDependencies:
+      '@types/picomatch':
+        specifier: ^4.0.2
+        version: 4.0.2
       astro-scripts:
         specifier: workspace:*
         version: link:../../scripts
