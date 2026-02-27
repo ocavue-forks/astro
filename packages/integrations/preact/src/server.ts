@@ -25,7 +25,7 @@ async function check(
 	if (typeof Component !== 'function') return false;
 	if (Component.name === 'QwikComponent') return false;
 
-	const componentUrl = metadata?.componentUrl
+	const componentUrl = metadata?.componentUrl;
 	if (filter && componentUrl && !filter(componentUrl)) {
 		return false;
 	}
