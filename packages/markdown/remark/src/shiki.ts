@@ -84,6 +84,15 @@ const cssVariablesTheme = () =>
 // Caches Promise<ShikiHighlighterInternal> for reuse when the same `themes` and `langAlias`.
 const cachedHighlighters = new Map<string, Promise<ShikiHighlighterInternal>>();
 
+/** 
+ * Only used for testing.
+ * 
+ * @internal
+ */
+export function clearShikiHighlighterCache(): void {
+	cachedHighlighters.clear();
+}
+
 export function createShikiHighlighter(
 	options?: CreateShikiHighlighterOptions,
 ): Promise<ShikiHighlighter> {

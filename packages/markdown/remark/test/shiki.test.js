@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import { describe, it } from 'node:test';
 import { createMarkdownProcessor, createShikiHighlighter } from '../dist/index.js';
+import { clearShikiHighlighterCache } from '../dist/shiki.js';
 
 describe('shiki syntax highlighting', () => {
 	it('does not add is:raw to the output', async () => {
@@ -181,5 +182,44 @@ describe('shiki syntax highlighting', () => {
 		const { code } = await processor.render('```cjs\nlet foo = "bar"\n```');
 
 		assert.match(code, /data-language="cjs"/);
+	});
+
+	it("the cached highlighter won't load the same language twice", async () => {
+		clearShikiHighlighterCache()
+
+		const theme = 'github-light';
+		const highlighter = await createShikiHighlighter({ theme });
+
+		// loadLanguage is an internal method
+		const loadLanguageArgs = [] 
+		const originalLoadLanguage = highlighter['loadLanguage']
+		highlighter['loadLanguage'] = async (...args) => {
+			loadLanguageArgs.push(...args)
+			return await originalLoadLanguage(...args)
+		}
+
+		// No languages loaded yet
+		assert.equal(loadLanguageArgs.length, 0);
+
+		// Load a new language
+		const h1 = await createShikiHighlighter({ theme, langs: ['js'] })
+		assert.equal(loadLanguageArgs.length, 1);
+		
+		// Load the same language again
+		const h2 = await createShikiHighlighter({ theme, langs: ['js'] })
+		assert.equal(loadLanguageArgs.length, 1);
+
+		// Load another language
+		const h3 = await createShikiHighlighter({ theme, langs: ['ts'] })
+		assert.equal(loadLanguageArgs.length, 2);
+
+		// Load the same language again
+		const h4 = await createShikiHighlighter({ theme, langs: ['ts'] })
+		assert.equal(loadLanguageArgs.length, 2);
+
+		// All highlighters should be the same instance
+		assert.equal(new Set([highlighter, h1, h2, h3, h4]).size, 1);
+
+		clearShikiHighlighterCache()
 	});
 });
