@@ -6628,7 +6628,14 @@ importers:
         version: 3.5.28(typescript@5.9.3)
 
   packages/internal-helpers:
+    dependencies:
+      picomatch:
+        specifier: ^4.0.3
+        version: 4.0.3
     devDependencies:
+      '@types/picomatch':
+        specifier: ^4.0.2
+        version: 4.0.2
       astro-scripts:
         specifier: workspace:*
         version: link:../../scripts
