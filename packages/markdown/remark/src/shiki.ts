@@ -84,9 +84,9 @@ const cssVariablesTheme = () =>
 // Caches Promise<ShikiHighlighterInternal> for reuse when the same `themes` and `langAlias`.
 const cachedHighlighters = new Map<string, Promise<ShikiHighlighterInternal>>();
 
-/** 
+/**
  * Only used for testing.
- * 
+ *
  * @internal
  */
 export function clearShikiHighlighterCache(): void {
@@ -101,7 +101,7 @@ export function createShikiHighlighter(
 	// `Promise.all([createShikiHighlighter(), createShikiHighlighter()])` would
 	// bypass the cache and create duplicate highlighters.
 
-	const key: string = getCacheKey(options)
+	const key: string = getCacheKey(options);
 	let highlighterPromise = cachedHighlighters.get(key);
 	if (!highlighterPromise) {
 		highlighterPromise = createShikiHighlighterInternal(options);
@@ -118,7 +118,7 @@ export function createShikiHighlighter(
  * different languages.
  */
 function getCacheKey(options?: CreateShikiHighlighterOptions): string {
-	const keyCache: unknown[] = []
+	const keyCache: unknown[] = [];
 	const { theme, themes, langAlias } = options ?? {};
 	if (theme) {
 		keyCache.push(theme);
