@@ -6,10 +6,10 @@ function normalizePath(filename: string): string {
 	return filename.replace(/\\/g, '/');
 }
 
-function ensureArray<T>(thing: readonly T[] | T | undefined | null): readonly T[] {
+function ensureArray(thing: FilterPattern | undefined): readonly (string | RegExp)[] {
 	if (Array.isArray(thing)) return thing;
 	if (thing == null) return [];
-	return [thing];
+	return [thing] as readonly (string | RegExp)[];
 }
 
 interface Matcher {

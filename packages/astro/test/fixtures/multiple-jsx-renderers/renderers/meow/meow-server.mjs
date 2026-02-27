@@ -1,5 +1,5 @@
 // @ts-check
-import { createFilter } from 'vite';
+import { createFilter } from '@astrojs/internal-helpers/create-filter';
 import opts from 'astro:meow:opts';
 
 const filter = (opts.include || opts.exclude) ? createFilter(opts.include, opts.exclude) : null;

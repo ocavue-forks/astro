@@ -6,7 +6,7 @@ import { getContext } from './context.js';
 import { restoreSignalsOnProps, serializeSignals } from './signals.js';
 import StaticHtml from './static-html.js';
 import type { AstroPreactAttrs, RendererContext } from './types.js';
-import { createFilter } from '@rollup/pluginutils';
+import { createFilter } from '@astrojs/internal-helpers/create-filter';
 
 const slotName = (str: string) => str.trim().replace(/[-_]([a-z])/g, (_, w) => w.toUpperCase());
 
