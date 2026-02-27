@@ -30,6 +30,8 @@ publicHoistPattern:
 # Wait until three days after release to install new versions of packages
 minimumReleaseAge: 4320
 minimumReleaseAgeExclude:
+  - 'shiki'
+  - '@shikijs/*'
   # TODO: remove once more stable
   - '@flue/*'
   - '@astrojs/compiler-rs'
