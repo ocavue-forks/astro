@@ -92,21 +92,35 @@ export function createShikiHighlighter(
 	// `Promise.all([createShikiHighlighter(), createShikiHighlighter()])` would
 	// bypass the cache and create duplicate highlighters.
 
-	const key: string = JSON.stringify([
-		// Notice that we don't use `langs` in the cache key because we can
-		// dynamically load languages. This allows us to reuse the same
-		// highlighter instance for different languages.
-		options?.theme,
-		Object.entries(options?.themes ?? {}).sort(),
-		Object.entries(options?.langAlias ?? {}).sort(),
-	]);
-
+	const key: string = getCacheKey(options)
 	let highlighterPromise = cachedHighlighters.get(key);
 	if (!highlighterPromise) {
 		highlighterPromise = createShikiHighlighterInternal(options);
 		cachedHighlighters.set(key, highlighterPromise);
 	}
 	return ensureLanguagesLoaded(highlighterPromise, options?.langs);
+}
+
+/**
+ * Gets the cache key for the highlighter.
+ *
+ * Notice that we don't use `langs` in the cache key because we can dynamically
+ * load languages. This allows us to reuse the same highlighter instance for
+ * different languages.
+ */
+function getCacheKey(options?: CreateShikiHighlighterOptions): string {
+	const keyCache: unknown[] = []
+	const { theme, themes, langAlias } = options ?? {};
+	if (theme) {
+		keyCache.push(theme);
+	}
+	if (themes) {
+		keyCache.push(Object.entries(themes).sort());
+	}
+	if (langAlias) {
+		keyCache.push(Object.entries(langAlias).sort());
+	}
+	return keyCache.length > 0 ? JSON.stringify(keyCache) : '';
 }
 
 /**
