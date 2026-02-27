@@ -300,6 +300,85 @@ describe('createFilter', () => {
 });
 ```
 
+## Todo List
+
+### Phase 1: Setup — Prepare the `internal-helpers` package
+
+- [ ] **1.1** Add `picomatch` as a runtime dependency in `packages/internal-helpers/package.json`
+  - Add `"picomatch": "^4.0.3"` to `"dependencies"`
+- [ ] **1.2** Add `@types/picomatch` as a dev dependency in `packages/internal-helpers/package.json`
+  - Add `"@types/picomatch": "^4.0.2"` to `"devDependencies"`
+- [ ] **1.3** Add the `"./create-filter"` entry to `"exports"` in `packages/internal-helpers/package.json`
+  - Value: `"./dist/create-filter.js"`
+- [ ] **1.4** Add the `"create-filter"` entry to `"typesVersions"` in `packages/internal-helpers/package.json`
+  - Value: `["./dist/create-filter.d.ts"]`
+- [ ] **1.5** Run `pnpm install` from the repo root to update the lockfile with the new dependencies
+
+### Phase 2: Implement — Write the `createFilter` function
+
+- [ ] **2.1** Implement the `normalizePath` helper in `packages/internal-helpers/src/create-filter.ts`
+  - Replace backslashes with forward slashes using `/\\/g` regex
+  - Must NOT import from `node:path`
+- [ ] **2.2** Implement the `ensureArray` helper in `packages/internal-helpers/src/create-filter.ts`
+  - Handle `null`, `undefined`, single values, and arrays
+  - Keep it local/private to this module (not exported)
+- [ ] **2.3** Implement the `createFilter` function body in `packages/internal-helpers/src/create-filter.ts`
+  - Import `picomatch` at the top of the file
+  - Keep the existing `FilterPattern` type export
+  - Keep the existing function signature `(include?: FilterPattern, exclude?: FilterPattern) => (id: string | unknown) => boolean`
+  - Build include/exclude matchers: RegExp used directly, strings compiled via `picomatch(normalizePath(pattern), { dot: true })`
+  - Early return when no patterns: `(id) => typeof id === 'string' && !id.includes('\0')`
+  - Filter logic: reject non-strings → reject null bytes → normalize path → check excludes first → check includes → default to `!includeMatchers.length`
+  - Reset `RegExp.lastIndex` to 0 before each `.test()` call on RegExp matchers
+- [ ] **2.4** Verify the file has NO imports from `node:path`, `node:fs`, or any other `node:*` module
+
+### Phase 3: Build — Verify the package compiles
+
+- [ ] **3.1** Run the `internal-helpers` build: `pnpm --filter @astrojs/internal-helpers build`
+- [ ] **3.2** Verify `packages/internal-helpers/dist/create-filter.js` is generated
+- [ ] **3.3** Verify `packages/internal-helpers/dist/create-filter.d.ts` is generated and exports `FilterPattern` type and `createFilter` function
+
+### Phase 4: Test — Write and run unit tests
+
+- [ ] **4.1** Create `packages/internal-helpers/test/create-filter.test.js`
+  - Use `node:assert/strict` and `node:test` (matching existing `test/path.test.js` style)
+  - Import from `'../dist/create-filter.js'`
+- [ ] **4.2** Write test: no patterns → returns true for all strings
+- [ ] **4.3** Write test: no patterns → rejects non-string values
+- [ ] **4.4** Write test: no patterns → rejects strings containing `\0`
+- [ ] **4.5** Write test: include with glob string (`'**/*.tsx'`) → matches `.tsx` files, rejects `.ts` files
+- [ ] **4.6** Write test: include with glob array (`['**/*.tsx', '**/*.jsx']`) → matches both extensions
+- [ ] **4.7** Write test: include with RegExp (`/\.tsx$/`) → matches `.tsx` files
+- [ ] **4.8** Write test: exclude with glob (`'**/node_modules/**'`) → excludes node_modules paths
+- [ ] **4.9** Write test: exclude wins over include when both match the same path
+- [ ] **4.10** Write test: include present but path doesn't match → returns false (not default true)
+- [ ] **4.11** Write test: backslash normalization — `'src\\App.ts'` matches `'**/*.ts'`
+- [ ] **4.12** Write test: global RegExp with `lastIndex` state is handled correctly (reset between calls)
+- [ ] **4.13** Run the tests: `pnpm --filter @astrojs/internal-helpers test`
+
+### Phase 5: Migrate — Update consumers to use the new module
+
+- [ ] **5.1** Update `packages/integrations/preact/src/server.ts` line 9
+  - Change `import { createFilter } from '@rollup/pluginutils'` → `import { createFilter } from '@astrojs/internal-helpers/create-filter'`
+- [ ] **5.2** Update `packages/integrations/preact/src/index.ts` line 118
+  - Remove `'@rollup/pluginutils'` from the `optimizeDeps.include` array in `configEnvironmentPlugin`
+- [ ] **5.3** Update `packages/integrations/preact/package.json`
+  - Remove `"@rollup/pluginutils": "^5.3.0"` from `"dependencies"`
+  - Add `"@astrojs/internal-helpers": "workspace:*"` to `"dependencies"` (if not already present)
+- [ ] **5.4** Update `packages/astro/test/fixtures/multiple-jsx-renderers/renderers/meow/meow-server.mjs` line 2
+  - Change `import { createFilter } from 'vite'` → `import { createFilter } from '@astrojs/internal-helpers/create-filter'`
+- [ ] **5.5** Update `packages/astro/test/fixtures/multiple-jsx-renderers/renderers/woof/woof-server.mjs` line 2
+  - Change `import { createFilter } from 'vite'` → `import { createFilter } from '@astrojs/internal-helpers/create-filter'`
+- [ ] **5.6** Run `pnpm install` again to sync dependency changes
+
+### Phase 6: Validate — Run integration tests and build
+
+- [ ] **6.1** Build the preact integration: `pnpm --filter @astrojs/preact build`
+- [ ] **6.2** Run the preact integration tests (if any): `pnpm --filter @astrojs/preact test`
+- [ ] **6.3** Run the multiple-jsx-renderers test: look for relevant test file in `packages/astro/test/` and run it
+- [ ] **6.4** Run `pnpm --filter @astrojs/internal-helpers test` one final time to confirm all unit tests pass
+- [ ] **6.5** Verify no remaining imports of `createFilter` from `@rollup/pluginutils` or `vite` (grep the codebase)
+
 ## File Change Summary
 
 | File | Action |
