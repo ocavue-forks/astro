@@ -261,6 +261,7 @@ Please ensure that ${metadata.displayName}:
 1. Does not unconditionally access browser-specific globals like \`window\` or \`document\`.
    If this is unavoidable, use the \`client:only\` hydration directive.
 2. Does not conditionally return \`null\` or \`undefined\` when rendered on the server.
+3. If using multiple JSX frameworks at the same time (e.g. React + Preact), pass the correct \`include\`/\`exclude\` options to integrations.
 
 If you're still stuck, please open an issue on GitHub or join us at https://astro.build/chat.`);
 			}
