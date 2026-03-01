@@ -39,6 +39,7 @@
     "test": "astro-scripts test \"test/**/*.test.js\""
   },
   "dependencies": {
+    "@astrojs/internal-helpers": "workspace:*",
     "@vitejs/plugin-react": "^5.1.4",
     "devalue": "^5.6.3",
     "ultrahtml": "^1.6.0",
