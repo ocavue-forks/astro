@@ -6080,6 +6080,9 @@ importers:
       '@vitejs/plugin-react':
         specifier: ^5.1.4
         version: 5.1.4(vite@7.3.1(@types/node@25.2.3)(jiti@2.6.1)(lightningcss@1.31.1)(sass@1.97.3)(tsx@4.21.0)(yaml@2.8.2))
+      devalue:
+        specifier: ^5.6.3
+        version: 5.6.3
       ultrahtml:
         specifier: ^1.6.0
         version: 1.6.0

@@ -3,6 +3,7 @@ import { preact, type PreactPluginOptions as VitePreactPluginOptions } from '@pr
 import type { AstroIntegration, AstroRenderer, ViteUserConfig } from 'astro';
 import * as devalue from 'devalue';
 import type { EnvironmentOptions, Plugin } from 'vite';
+import type { VirtualModuleOptions } from './types.js';
 
 const babelCwd = new URL('../', import.meta.url);
 
@@ -34,11 +35,12 @@ function optionsPlugin(include: Options['include'], exclude: Options['exclude'])
 				id: new RegExp(`^${virtualModuleId}$`),
 			},
 			handler() {
+				const opts: VirtualModuleOptions = {
+					include,
+					exclude,
+				};
 				return {
-					code: `export default {
-						include: ${devalue.uneval(include ?? null)},
-						exclude: ${devalue.uneval(exclude ?? null)}
-					}`,
+					code: `export default ${devalue.uneval(opts)}`,
 				};
 			},
 		},
