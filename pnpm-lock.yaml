@@ -6078,7 +6078,7 @@ importers:
   packages/integrations/react:
     dependencies:
       '@astrojs/internal-helpers':
-        specifier: 0.8.0-beta.1
+        specifier: workspace:*
         version: link:../../internal-helpers
       '@vitejs/plugin-react':
         specifier: ^5.1.4
