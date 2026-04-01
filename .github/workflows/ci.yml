@@ -85,6 +85,14 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
+      - name: Debug current git status
+        run: |
+          git status
+
+      - name: Debug current git branch
+        run: |
+          git branch
+
       # Only build in ubuntu as windows can share the build cache.
       # Also only build in core repo as forks don't have access to the Turbo cache.
       - name: Build Packages
@@ -97,7 +105,7 @@ jobs:
       contents: read
     steps:
       - name: Checkout
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd # v5.0.1
         with:
           persist-credentials: false
       - name: Setup Biome
@@ -181,6 +189,29 @@ jobs:
 
       - name: Install dependencies
         run: pnpm install
+
+      - name: Debug current git status
+        run: |
+          git status
+
+      - name: Debug current git branch
+        run: |
+          git branch
+
+      - name: Add main branch 
+      
+        run: |
+          git fetch --all || echo "Something went wrong with the git fetch"
+          git branch --track main origin/main || echo "Something went wrong with the git fetch"
+
+      - name: Debug current git status v2
+        run: |
+          git status
+
+      - name: Debug current git branch v2
+        run: |
+          git branch
+        
 
       - name: Build Packages
         run: pnpm run build
