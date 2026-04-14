@@ -1,6 +1,6 @@
 {
   "extends": "../../tsconfig.base.json",
-  "include": ["src", "dev-only.d.ts"],
+  "include": ["src", "dev-only.d.ts", "./package.json"],
   "exclude": ["dist"],
   "compilerOptions": {
     "rootDir": "./src",
@@ -8,6 +8,9 @@
     "declarationDir": "./dist",
     "outDir": "./dist",
     "jsx": "preserve",
+    "composite": true,
+    // `._cache` is always excluded when publishing packages, see https://docs.npmjs.com/cli/v10/configuring-npm/package-json#files
+    "tsBuildInfoFile": "dist/._cache/.tsbuildinfo",
     "erasableSyntaxOnly": true
   }
 }
