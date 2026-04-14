@@ -19,8 +19,7 @@
     "rewriteRelativeImportExtensions": true
   },
   "references": [
-    {
-      "path": "../../scripts/tsconfig.json"
-    }
+    {"path": "./tsconfig.json"},
+    {"path": "../../scripts/tsconfig.json"}
   ]
 }

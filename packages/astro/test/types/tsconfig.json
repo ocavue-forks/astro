@@ -1,8 +1,12 @@
 {
   "extends": "../../../../tsconfig.base.json",
   "compilerOptions": {
+    "composite": true,
     "allowJs": true,
     "emitDeclarationOnly": false,
-    "noEmit": true
-  }
+    "noEmit": true,
+  },
+  "references": [
+    {"path": "../../tsconfig.json"}
+  ]
 }
