@@ -3,10 +3,11 @@
   "compilerOptions": {
     "composite": true,
     "allowJs": true,
-    "emitDeclarationOnly": false,
-    "noEmit": true,
+    "emitDeclarationOnly": false
   },
   "references": [
-    {"path": "../../tsconfig.json"}
+    {
+      "path": "../../tsconfig.json"
+    }
   ]
 }
