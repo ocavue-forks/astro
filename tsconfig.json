@@ -1,5 +1,10 @@
-// Yes this file is intentionally empty!
-// ---
-// Having a blank `tsconfig.json` file prevents TypeScript from crawling up your directory tree
-// and possibly picking up a parent `tsconfig.json` (which, unsurprisingly, is very hard to debug)
-{}
+{
+  "include": [
+    // The root `tsconfig.json` includes nothing. All TypeScript files should be included in the `tsconfig.json` in the project references below.
+  ],
+  "references": [
+    { "path": "packages/astro/tsconfig.test.json" },
+    { "path": "packages/integrations/react/tsconfig.json" },
+    { "path": "packages/integrations/react/tsconfig.test.json" }
+  ]
+}

@@ -7,7 +7,6 @@ import {
 	type Fixture,
 	type DevServer,
 } from '../../../astro/test/test-utils.js';
-import { includes } from 'astro:schema';
 
 let fixture: Fixture;
 
@@ -162,7 +161,7 @@ describe('React Components', () => {
 
 		it('scripts proxy correctly', async () => {
 			const response = await fixture.fetch('/');
-			const html: text = response.text();
+			const html: string = await response.text();
 			const $ = cheerioLoad(html);
 
 			for (const script of $('script').toArray()) {
