@@ -7,6 +7,7 @@ import {
 	type Fixture,
 	type DevServer,
 } from '../../../astro/test/test-utils.js';
+import { includes } from 'astro:schema';
 
 let fixture: Fixture;
 
@@ -160,7 +161,8 @@ describe('React Components', () => {
 		});
 
 		it('scripts proxy correctly', async () => {
-			const html = await fixture.fetch('/').then((res) => res.text());
+			const response = await fixture.fetch('/');
+			const html: text = response.text();
 			const $ = cheerioLoad(html);
 
 			for (const script of $('script').toArray()) {
@@ -172,9 +174,10 @@ describe('React Components', () => {
 
 		// TODO: move this to separate dev test?
 		it.skip('Throws helpful error message on window SSR', async () => {
-			const html = await fixture.fetch('/window/index.html');
+			const response = await fixture.fetch('/window/index.html');
+			const html: string = await response.text();
 			assert.ok(
-				(await html.text()).includes(
+				html.includes(
 					`[/window]
 			The window object is not available during server-side rendering (SSR).
 			Try using \`import.meta.env.SSR\` to write SSR-friendly code.
@@ -186,12 +189,11 @@ describe('React Components', () => {
 		// In moving over to Vite, the jsx-runtime import is now obscured. TODO: update the method of finding this.
 		it.skip('uses the new JSX transform', async () => {
 			const response = await fixture.fetch('/index.html');
-			const html = await response.text();
+			const html: string = await response.text();
 
 			// Grab the imports
 			const exp = /import\("(.+?)"\)/g;
-			let match;
-			let componentUrl: string | undefined;
+			let match, componentUrl: string | undefined;
 			while ((match = exp.exec(html))) {
 				if (match[1].includes('Research.js')) {
 					componentUrl = match[1];
