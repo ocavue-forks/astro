@@ -203,7 +203,7 @@ describe('React Components', () => {
 			}
 
 			const component = await fixture.readFile(componentUrl);
-			// @ts-ignore: error TS2339: Property 'imports' does not exist on type 'string'. I don't know why yet
+			// @ts-ignore: error TS2339: Property 'imports' does not exist on type 'string'.
 			const imports = component.imports;
 			const jsxRuntime = imports.filter((i: any) => i.specifier.includes('jsx-runtime'));
 
