@@ -1,6 +1,6 @@
 {
   "extends": "../../tsconfig.base.json",
-  "include": ["src", "dev-only.d.ts"],
+  "include": ["src", "dev-only.d.ts", "./package.json"],
   "exclude": ["dist"],
   "compilerOptions": {
     "rootDir": "./src",
@@ -8,6 +8,8 @@
     "declarationDir": "./dist",
     "outDir": "./dist",
     "jsx": "preserve",
+    "composite": true,
+    "tsBuildInfoFile": "dist/_cache/.tsbuildinfo",
     "erasableSyntaxOnly": true
   }
 }

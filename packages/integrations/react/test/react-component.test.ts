@@ -1,9 +1,14 @@
 import assert from 'node:assert/strict';
 import { after, before, describe, it } from 'node:test';
 import { load as cheerioLoad } from 'cheerio';
-import { isWindows, loadFixture } from '../../../astro/test/test-utils.js';
+import {
+	isWindows,
+	loadFixture,
+	type Fixture,
+	type DevServer,
+} from '../../../astro/test/test-utils.js';
 
-let fixture;
+let fixture: Fixture;
 
 describe('React Components', () => {
 	before(async () => {
@@ -144,8 +149,7 @@ describe('React Components', () => {
 	if (isWindows) return;
 
 	describe('dev', () => {
-		/** @type {import('../../../astro/test/test-utils.js').Fixture} */
-		let devServer;
+		let devServer: DevServer;
 
 		before(async () => {
 			devServer = await fixture.startDevServer();
@@ -181,19 +185,27 @@ describe('React Components', () => {
 
 		// In moving over to Vite, the jsx-runtime import is now obscured. TODO: update the method of finding this.
 		it.skip('uses the new JSX transform', async () => {
-			const html = await fixture.fetch('/index.html');
+			const response = await fixture.fetch('/index.html');
+			const html = await response.text();
 
 			// Grab the imports
 			const exp = /import\("(.+?)"\)/g;
-			let match, componentUrl;
+			let match;
+			let componentUrl: string | undefined;
 			while ((match = exp.exec(html))) {
 				if (match[1].includes('Research.js')) {
 					componentUrl = match[1];
 					break;
 				}
 			}
+			if (!componentUrl) {
+				throw new Error('Could not find component URL in HTML');
+			}
+
 			const component = await fixture.readFile(componentUrl);
-			const jsxRuntime = component.imports.filter((i) => i.specifier.includes('jsx-runtime'));
+			// @ts-ignore: error TS2339: Property 'imports' does not exist on type 'string'. I don't know why yet
+			const imports = component.imports;
+			const jsxRuntime = imports.filter((i: any) => i.specifier.includes('jsx-runtime'));
 
 			// test 1: react/jsx-runtime is used for the component
 			assert.ok(jsxRuntime);
