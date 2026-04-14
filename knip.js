@@ -80,7 +80,7 @@ export default {
 			ignoreDependencies: ['solid-devtools'],
 		},
 		'packages/integrations/vercel': {
-			entry: [testEntry, 'test/test-image-service.js', 'types.d.ts'],
+			entry: [testEntry, 'test/test-image-service.js'],
 			ignore: ['test/hosted/**'],
 		},
 		'packages/markdown/remark': {
