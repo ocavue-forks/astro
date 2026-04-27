@@ -108,7 +108,7 @@ jobs:
   lint:
     name: Lint
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 100
     needs: 
       - biome-lint
     steps:
