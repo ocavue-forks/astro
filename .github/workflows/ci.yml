@@ -149,9 +149,19 @@ jobs:
         
       - run: |
           cd packages/upgrade/
+          pwd
           pnpm run typecheck:tests
 
       - run: ls -al packages/upgrade/node_modules/.cache || true
+        
+      - run: bash rmcache.sh
+        
+      - run: ls -al packages/upgrade/node_modules/.cache || true
+      
+      - run: |
+          cd packages/upgrade/
+          pwd
+          pnpm run typecheck:tests        
 
       - name: Lint source code
         run: pnpm run lint:ci
