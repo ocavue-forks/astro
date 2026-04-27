@@ -128,9 +128,9 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
-      - name: Build Packages
-        # The cache doesn't contain prebuild files and causes knip to fail
-        run: pnpm run build --force
+      # - name: Build Packages
+      #   # The cache doesn't contain prebuild files and causes knip to fail
+      #   run: pnpm run build --force
         
       - name: Setup tmate session
         uses: mxschmitt/action-tmate@v3        
