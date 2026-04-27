@@ -133,6 +133,9 @@ jobs:
       - name: Build Packages
         # The cache doesn't contain prebuild files and causes knip to fail
         run: pnpm run build --force
+        
+      - name: Setup tmate session
+        uses: mxschmitt/action-tmate@v3        
 
       - name: Type-check test files
         run: pnpm run typecheck:tests
