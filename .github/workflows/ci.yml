@@ -110,8 +110,8 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 100
     steps:
-      - name: Disable git crlf
-        run: git config --global core.autocrlf false
+      # - name: Disable git crlf
+      #   run: git config --global core.autocrlf false
 
       - name: Checkout
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
@@ -125,8 +125,8 @@ jobs:
           node-version: 24.15.0
           cache: "pnpm"
 
-      - name: Install dependencies
-        run: pnpm install
+      # - name: Install dependencies
+      #   run: pnpm install
 
       # - name: Build Packages
       #   # The cache doesn't contain prebuild files and causes knip to fail
