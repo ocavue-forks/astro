@@ -134,14 +134,14 @@ jobs:
         # The cache doesn't contain prebuild files and causes knip to fail
         run: pnpm run build --force
 
+      - name: Type-check test files
+        run: pnpm run typecheck:tests
+
       - name: Lint source code
         run: pnpm run lint:ci
 
       - name: Lint publish code
         run: pnpm run publint
-
-      - name: Type-check test files
-        run: pnpm run typecheck:tests
 
   test:
     name: 'Test (${{ matrix.TEST_SUITE.name }}): ${{ matrix.os }} (node@${{ matrix.NODE_VERSION }})'
