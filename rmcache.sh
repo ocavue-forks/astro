@@ -11,3 +11,5 @@ function rmcache {
     -path "*/node_modules/.astro" \
   \) -prune -print -exec rm -rf {} +
 }
+
+rmcache
