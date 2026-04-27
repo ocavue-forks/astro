@@ -125,18 +125,25 @@ jobs:
           node-version: 24.15.0
           cache: "pnpm"
 
-      # - name: Install dependencies
-      #   run: pnpm install
+      - name: Install dependencies
+        run: pnpm install
 
-      # - name: Build Packages
-      #   # The cache doesn't contain prebuild files and causes knip to fail
-      #   run: pnpm run build --force
+      - name: Build Packages
+        # The cache doesn't contain prebuild files and causes knip to fail
+        run: pnpm run build --force
         
-      - name: Setup tmate session
-        uses: mxschmitt/action-tmate@v3        
-
+      - run: ls -al packages/upgrade/node_modules/.cache || true
+        
       - name: Type-check test files
         run: pnpm run typecheck:tests
+        
+      - run: ls -al packages/upgrade/node_modules/.cache || true
+        
+      - run: |
+          cd packages/upgrade/
+          pnpm run typecheck:tests
+
+      - run: ls -al packages/upgrade/node_modules/.cache || true
 
       - name: Lint source code
         run: pnpm run lint:ci
