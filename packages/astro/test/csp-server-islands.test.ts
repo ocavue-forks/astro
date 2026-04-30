@@ -142,9 +142,10 @@ describe('Server islands', () => {
 					});
 					assert.equal(true, false, 'should not have succeeded');
 				} catch (err) {
-					assert.equal(
-						(err as { title: string }).title,
-						'Cannot use Server Islands without an adapter.',
+					const message = (err as Error).message;
+					assert.ok(
+						message.includes('NoAdapterInstalledServerIslands'),
+						`Expected error about missing adapter, got: ${message}`,
 					);
 				}
 			});
