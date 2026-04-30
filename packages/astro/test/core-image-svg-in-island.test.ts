@@ -30,7 +30,7 @@ describe('astro:assets - SVG Components in Astro Islands', async () => {
 			const componentModule = await fixture.fetch(componentUrl).then((res) => res.text());
 			// Use a regex to extract the SVG import path directly. Vite may concatenate
 			// multiple statements on a single line, so line-based splitting is unreliable.
-			const svgImportMatch = componentModule.match(/from\s+["']([^"']*astro\.svg[^"']*)["']/);
+			const svgImportMatch = /from\s+["']([^"']*astro\.svg[^"']*)["']/.exec(componentModule);
 			assert.ok(svgImportMatch, 'Expected SVG to be imported in the component.');
 			const importPath = svgImportMatch[1];
 			const mod = await fixture.fetch(importPath).then((res) => res.text());
