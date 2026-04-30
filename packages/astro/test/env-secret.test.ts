@@ -79,7 +79,7 @@ describe('astro:env secret variables', () => {
 			await fixture.build();
 			assert.fail();
 		} catch (e) {
-			const error = e as AstroError;
+			const error = e.errors[0] as any as AstroError;
 			assert.equal(error instanceof Error, true);
 			assert.equal(error.title, 'Invalid Environment Variables');
 			assert.equal(error.message.includes('KNOWN_SECRET is missing'), true);
