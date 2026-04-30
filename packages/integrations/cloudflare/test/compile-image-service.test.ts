@@ -36,7 +36,14 @@ describe('CompileImageService', () => {
 		// In dev, the compile service falls back to passthrough because sharp cannot run in workerd. Images are served unoptimized
 		// through the /_image endpoint.
 		it('returns 200 for local images via /_image endpoint', async () => {
-			const html = await fixture.fetch('/blog/post').then((res) => res.text());
+			let html = '';
+
+			try {
+				html = await fixture.fetch('/blog/post').then((res) => res.text());
+			} catch (error) {
+				console.error('Error getting html:', error);
+				throw error;
+			}
 			const $ = cheerio.load(html);
 			const src = $('img').attr('src')!;
 			assert.ok(
