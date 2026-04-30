@@ -1,6 +1,5 @@
 import * as assert from 'node:assert/strict';
 import { before, describe, it } from 'node:test';
-import * as cheerio from 'cheerio';
 import { loadFixture, type Fixture } from './test-utils.ts';
 
 describe('CSS deduplication for hydrated components', () => {

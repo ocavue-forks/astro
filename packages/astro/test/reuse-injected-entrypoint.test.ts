@@ -90,7 +90,6 @@ describe('Reuse injected entrypoint', () => {
 				}
 
 				const html = await fixture.readFile(htmlFile);
-				console.log(html);
 				const $ = cheerioLoad(html);
 
 				if (h1) {
