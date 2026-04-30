@@ -1,18 +1,16 @@
 # @astrojs/db
 
-<<<<<<< HEAD
 ## 1.0.0-alpha.0
 
 ### Major Changes
 
 - [#15819](https://github.com/withastro/astro/pull/15819) [`cafec4e`](https://github.com/withastro/astro/commit/cafec4e23365061491103dfce2e889a15cf86f27) Thanks [@delucis](https://github.com/delucis)! - Upgrade to Vite v8
-=======
+
 ## 0.21.1
 
 ### Patch Changes
 
 - [#16534](https://github.com/withastro/astro/pull/16534) [`5cf6c51`](https://github.com/withastro/astro/commit/5cf6c51188b52d22f133ea9373da0080f74701f9) Thanks [@matthewp](https://github.com/matthewp)! - Fixes compatibility with Zod 4.4.0 for the `server` config property and error formatting
->>>>>>> origin/main
 
 ## 0.21.0
 

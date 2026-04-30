@@ -1,6 +1,5 @@
 # astro
 
-<<<<<<< HEAD
 ## 7.0.0-alpha.0
 
 ### Major Changes
@@ -20,7 +19,7 @@
 - [#15819](https://github.com/withastro/astro/pull/15819) [`cafec4e`](https://github.com/withastro/astro/commit/cafec4e23365061491103dfce2e889a15cf86f27) Thanks [@delucis](https://github.com/delucis)! - Fixes `--port` flag being ignored after a Vite-triggered server restart (e.g. when a `.env` file changes)
 
 - [#16434](https://github.com/withastro/astro/pull/16434) [`ee079d4`](https://github.com/withastro/astro/commit/ee079d4c7f143076b84d663c832911009a077c7f) Thanks [@ematipico](https://github.com/ematipico)! - Fixes an issue where i18n domains would return 404 when `trailingSlash` is set to `never`.
-=======
+
 ## 6.2.1
 
 ### Patch Changes
@@ -30,7 +29,6 @@
 - [#16535](https://github.com/withastro/astro/pull/16535) [`7df0fe4`](https://github.com/withastro/astro/commit/7df0fe40b1f57529ce315a74eb83d527ff2040ec) Thanks [@rururux](https://github.com/rururux)! - Fixed an issue where a warning was displayed when the `server` property was missing during config validation, even though it is not required.
 
 - [#16534](https://github.com/withastro/astro/pull/16534) [`5cf6c51`](https://github.com/withastro/astro/commit/5cf6c51188b52d22f133ea9373da0080f74701f9) Thanks [@matthewp](https://github.com/matthewp)! - Fixes compatibility with Zod 4.4.0 for the `server` config property and error formatting
->>>>>>> origin/main
 
 ## 6.2.0
 
