@@ -6,16 +6,26 @@ import { type DevServer, type Fixture, loadFixture, type PreviewServer } from '.
 describe('CompileImageService', () => {
 	let fixture: Fixture;
 	before(async () => {
+		console.warn('='.repeat(70));
+		console.warn("Starting loadFixture './fixtures/compile-image-service/'");
+
 		fixture = await loadFixture({
 			root: './fixtures/compile-image-service/',
 		});
+
+		console.warn("Finish loadFixture './fixtures/compile-image-service/'");
+		console.warn('='.repeat(70));
 	});
 
 	describe('dev', () => {
 		let devServer: DevServer | undefined;
 		before(async () => {
 			try {
+				console.warn('='.repeat(70));
+				console.warn('Starting startDevServer');
 				devServer = await fixture.startDevServer();
+				console.warn('Finish startDevServer');
+				console.warn('='.repeat(70));
 			} catch (error) {
 				console.error('Error starting dev server:', error);
 				throw error;
@@ -39,7 +49,11 @@ describe('CompileImageService', () => {
 			let html = '';
 
 			try {
+				console.warn('='.repeat(70));
+				console.warn('Starting fixture.fetch');
 				html = await fixture.fetch('/blog/post').then((res) => res.text());
+				console.warn('Finish fixture.fetch');
+				console.warn('='.repeat(70));
 			} catch (error) {
 				console.error('Error getting html:', error);
 				throw error;
