@@ -365,7 +365,7 @@ export default function assets({ fs, settings, sync, logger }: Options): vite.Pl
 						// component is reconstructed later in content/runtime.ts from __svgData
 						// embedded in the metadata, avoiding a server-runtime import here that
 						// would create a circular dependency when combined with TLA.
-						if (id.endsWith('.svg') && !isContentImage) {
+						if (id.endsWith('.svg')) {
 							const contents = await fs.promises.readFile(imageMetadata.fsPath, {
 								encoding: 'utf8',
 							});

@@ -3522,6 +3522,9 @@ importers:
 
   packages/astro/test/fixtures/minification-html-jsx:
     dependencies:
+      '@astrojs/react':
+        specifier: workspace:*
+        version: link:../../../../integrations/react
       astro:
         specifier: workspace:*
         version: link:../../..
