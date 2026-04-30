@@ -16,13 +16,13 @@ import { shouldInlineAsset } from './util.js';
 /***** ASTRO PLUGIN *****/
 
 export function pluginCSS(options: StaticBuildOptions, internals: BuildInternals): VitePlugin[] {
-	return rolldownPluginAstroBuildCSS({
+	return rollupPluginAstroBuildCSS({
 		buildOptions: options,
 		internals,
 	});
 }
 
-/***** ROLLDOWN SUB-PLUGINS *****/
+/***** ROLLUP SUB-PLUGINS *****/
 
 interface PluginOptions {
 	internals: BuildInternals;
@@ -35,7 +35,7 @@ function isBuildCssBoundary(id: string, ctx: { getModuleInfo: Rolldown.GetModule
 	return info ? moduleIsTopLevelPage(info) : false;
 }
 
-function rolldownPluginAstroBuildCSS(options: PluginOptions): VitePlugin[] {
+function rollupPluginAstroBuildCSS(options: PluginOptions): VitePlugin[] {
 	const { internals, buildOptions } = options;
 	const { settings } = buildOptions;
 
@@ -47,7 +47,7 @@ function rolldownPluginAstroBuildCSS(options: PluginOptions): VitePlugin[] {
 	const moduleIdToPropagatedCss: Record<string, Set<string>> = {};
 
 	const cssBuildPlugin: VitePlugin = {
-		name: 'astro:rolldown-plugin-build-css',
+		name: 'astro:rollup-plugin-build-css',
 
 		applyToEnvironment(environment) {
 			return (
@@ -263,7 +263,7 @@ function rolldownPluginAstroBuildCSS(options: PluginOptions): VitePlugin[] {
 	};
 
 	const singleCssPlugin: VitePlugin = {
-		name: 'astro:rolldown-plugin-single-css',
+		name: 'astro:rollup-plugin-single-css',
 		enforce: 'post',
 		applyToEnvironment(environment) {
 			return (
@@ -293,7 +293,7 @@ function rolldownPluginAstroBuildCSS(options: PluginOptions): VitePlugin[] {
 
 	let assetsInlineLimit: NonNullable<BuildOptions['assetsInlineLimit']>;
 	const inlineStylesheetsPlugin: VitePlugin = {
-		name: 'astro:rolldown-plugin-inline-stylesheets',
+		name: 'astro:rollup-plugin-inline-stylesheets',
 		enforce: 'post',
 		applyToEnvironment(environment) {
 			return (
