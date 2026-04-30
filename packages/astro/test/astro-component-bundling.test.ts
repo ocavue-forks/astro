@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { after, before, describe, it } from 'node:test';
-import { type DevServer, type Fixture, loadFixture } from './test-utils.js';
+import { type DevServer, type Fixture, loadFixture } from './test-utils.ts';
 
 describe('Component bundling', () => {
 	let fixture: Fixture;
@@ -62,7 +62,7 @@ describe('Component bundling', () => {
 			assert(match, 'Expected a <script> tag to be present');
 			assert.match(
 				match[0],
-				/^<script type="module">console.log\(\{\}\);<\/script>$/,
+				/^<script type="module">const \w=\{\};console.log\(\w\);<\/script>$/,
 				'Astro component on the client should be an empty object in prod',
 			);
 		});

@@ -5,6 +5,9 @@ import { resolveConfig } from 'vite';
 import { compileAstro } from '../../../dist/vite-plugin-astro/compile.js';
 import type { AstroConfig } from '../../../dist/types/public/config.js';
 import type { CompileProps } from '../../../dist/core/compile/compile.js';
+import { createNodeLoggerFromFlags } from '../../../dist/core/logger/impls/node.js';
+
+const logger = createNodeLoggerFromFlags({ logLevel: 'silent' });
 
 /** Compile Astro source with a given base path. */
 async function compileWithBase(source: string, base = '/') {
@@ -25,6 +28,7 @@ async function compileWithBase(source: string, base = '/') {
 	return compileAstro({
 		compileProps: props as any,
 		astroFileToCompileMetadata: new Map(),
+		logger,
 	});
 }
 
@@ -52,7 +56,7 @@ describe('CSS Base Path Rewriting', () => {
 			const result = await compileWithBase(source, '/my-base/');
 			const css = result.css[0].code;
 
-			assert.match(css, /url\(['"]?\/my-base\/images\/bg\.png['"]?\)/);
+			assert.match(css, /url\(\/my-base\/images\/bg\.png\)/);
 		});
 
 		it('should rewrite double-quoted URLs', async () => {
@@ -77,7 +81,7 @@ describe('CSS Base Path Rewriting', () => {
 			const result = await compileWithBase(source, '/my-base');
 			const css = result.css[0].code;
 
-			assert.match(css, /url\(['"]?\/my-base\/images\/bg\.png['"]?\)/);
+			assert.match(css, /url\(\/my-base\/images\/bg\.png\)/);
 		});
 
 		it('should handle nested base paths', async () => {
@@ -85,7 +89,7 @@ describe('CSS Base Path Rewriting', () => {
 			const result = await compileWithBase(source, '/path/to/app/');
 			const css = result.css[0].code;
 
-			assert.match(css, /url\(['"]?\/path\/to\/app\/images\/bg\.png['"]?\)/);
+			assert.match(css, /url\(\/path\/to\/app\/images\/bg\.png\)/);
 		});
 
 		it('should handle multiple URLs in one declaration', async () => {
@@ -104,7 +108,7 @@ describe('CSS Base Path Rewriting', () => {
 			const result = await compileWithBase(source, '/my-base/');
 			const css = result.css[0].code;
 
-			assert.match(css, /url\(['"]?\.\/local\.png['"]?\)/);
+			assert.match(css, /url\(\.\/local\.png\)/);
 			assert.doesNotMatch(css, /\/my-base/);
 		});
 
@@ -113,7 +117,7 @@ describe('CSS Base Path Rewriting', () => {
 			const result = await compileWithBase(source, '/my-base/');
 			const css = result.css[0].code;
 
-			assert.match(css, /url\(['"]?\.\.\/parent\.png['"]?\)/);
+			assert.match(css, /url\(\.\.\/parent\.png\)/);
 			assert.doesNotMatch(css, /\/my-base/);
 		});
 
@@ -122,7 +126,7 @@ describe('CSS Base Path Rewriting', () => {
 			const result = await compileWithBase(source, '/my-base/');
 			const css = result.css[0].code;
 
-			assert.match(css, /url\(['"]?https:\/\/example\.com\/image\.png['"]?\)/);
+			assert.match(css, /url\(https:\/\/example\.com\/image\.png\)/);
 			assert.doesNotMatch(css, /\/my-base/);
 		});
 
@@ -131,7 +135,7 @@ describe('CSS Base Path Rewriting', () => {
 			const result = await compileWithBase(source, '/my-base/');
 			const css = result.css[0].code;
 
-			assert.match(css, /url\(['"]?http:\/\/example\.com\/image\.png['"]?\)/);
+			assert.match(css, /url\(http:\/\/example\.com\/image\.png\)/);
 			assert.doesNotMatch(css, /\/my-base/);
 		});
 
@@ -140,7 +144,7 @@ describe('CSS Base Path Rewriting', () => {
 			const result = await compileWithBase(source, '/my-base/');
 			const css = result.css[0].code;
 
-			assert.match(css, /url\(['"]?data:image\/svg\+xml/);
+			assert.match(css, /url\(data:image\/svg\+xml/);
 			assert.doesNotMatch(css, /\/my-base/);
 		});
 
@@ -149,7 +153,7 @@ describe('CSS Base Path Rewriting', () => {
 			const result = await compileWithBase(source, '/my-base/');
 			const css = result.css[0].code;
 
-			assert.match(css, /url\(['"]?\/\/cdn\.example\.com\/image\.png['"]?\)/);
+			assert.match(css, /url\(\/\/cdn\.example\.com\/image\.png\)/);
 			// Should not have /my-base// (double slash would be wrong)
 			assert.doesNotMatch(css, /\/my-base\/\//);
 		});
@@ -166,8 +170,8 @@ describe('CSS Base Path Rewriting', () => {
 			const css = result.css[0].code;
 
 			// Should NOT add extra slash
-			assert.match(css, /url\(['"]?\/images\/bg\.png['"]?\)/);
-			assert.doesNotMatch(css, /url\(['"]?\/\/images/);
+			assert.match(css, /url\(\/images\/bg\.png\)/);
+			assert.doesNotMatch(css, /url\(\/\/images/);
 		});
 
 		it('should be idempotent (not double-apply base)', async () => {
@@ -176,7 +180,7 @@ describe('CSS Base Path Rewriting', () => {
 			const css = result.css[0].code;
 
 			// Should not become /my-base/my-base/images/bg.png
-			assert.match(css, /url\(['"]?\/my-base\/images\/bg\.png['"]?\)/);
+			assert.match(css, /url\(\/my-base\/images\/bg\.png\)/);
 			assert.doesNotMatch(css, /\/my-base\/my-base/);
 		});
 
@@ -193,7 +197,7 @@ describe('CSS Base Path Rewriting', () => {
 			const result = await compileWithBase(source, '');
 			const css = result.css[0].code;
 
-			assert.match(css, /url\(['"]?\/images\/bg\.png['"]?\)/);
+			assert.match(css, /url\(\/images\/bg\.png\)/);
 		});
 	});
 

@@ -1,7 +1,7 @@
 import * as assert from 'node:assert/strict';
 import { before, describe, it } from 'node:test';
 import * as cheerio from 'cheerio';
-import { loadFixture, type Fixture } from './test-utils.js';
+import { loadFixture, type Fixture } from './test-utils.ts';
 
 describe('CSS deduplication for hydrated components', () => {
 	describe('inlineStylesheets: never', () => {
@@ -20,7 +20,7 @@ describe('CSS deduplication for hydrated components', () => {
 			const assets = await fixture.readdir('/_astro');
 
 			// Generated file for Counter.css (filename format changed in main-next)
-			const COUNTER_CSS_PATH = '/_astro/index@_@astro.BmwMjdxs.css';
+			const COUNTER_CSS_PATH = '/_astro/index@_@astro.DbgLc3FE.css';
 			let file = await fixture.readFile(COUNTER_CSS_PATH);
 			file = file.replace(/\s+/g, '');
 

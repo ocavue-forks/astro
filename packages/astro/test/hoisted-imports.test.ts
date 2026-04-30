@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import { before, describe, it } from 'node:test';
 import * as cheerio from 'cheerio';
-import { type Fixture, loadFixture } from './test-utils.js';
+import { type Fixture, loadFixture } from './test-utils.ts';
 
 describe('Hoisted Imports', () => {
 	let fixture: Fixture;
@@ -27,11 +27,11 @@ describe('Hoisted Imports', () => {
 		});
 
 		function expectScript(scripts: string, letter: string) {
-			const regex = new RegExp(`console.log\\(['"\`]${letter}['"\`]\\)`);
+			const regex = new RegExp(`console.log\\(['"]${letter}['"]\\)`);
 			assert.match(scripts, regex, 'missing component ' + letter);
 		}
 		function expectNotScript(scripts: string, letter: string) {
-			const regex = new RegExp(`console.log\\(['"\`]${letter}['"\`]\\)`);
+			const regex = new RegExp(`console.log\\(['"]${letter}['"]\\)`);
 			assert.doesNotMatch(scripts, regex, "shouldn't include component " + letter);
 		}
 

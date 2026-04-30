@@ -1,13 +1,12 @@
 import { expect } from '@playwright/test';
-import { type DevServer, testFactory, waitForHydrate, warmupDevServer } from './test-utils.ts';
+import { type DevServer, testFactory, waitForHydrate } from './test-utils.ts';
 
 const test = testFactory(import.meta.url, { root: './fixtures/nested-in-vue/' });
 
 let devServer: DevServer;
 
-test.beforeAll(async ({ astro, browser }) => {
+test.beforeAll(async ({ astro }) => {
 	devServer = await astro.startDevServer();
-	await warmupDevServer(browser, astro.resolveUrl('/'));
 });
 
 test.afterAll(async () => {
@@ -99,7 +98,7 @@ test.describe('Nested Frameworks in Vue', () => {
 		await expect(count, 'count incremented by 1').toHaveText('1');
 	});
 
-	test.skip('Svelte counter', async ({ astro, page }) => {
+	test('Svelte counter', async ({ astro, page }) => {
 		await page.goto(astro.resolveUrl('/'));
 
 		const counter = page.locator('#svelte-counter');

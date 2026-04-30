@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import { after, before, describe, it } from 'node:test';
 import { load as cheerioLoad } from 'cheerio';
-import { type DevServer, type Fixture, loadFixture } from './test-utils.js';
+import { type DevServer, type Fixture, loadFixture } from './test-utils.ts';
 
 type Route = {
 	description: string;
@@ -23,13 +23,13 @@ const routes: Route[] = [
 		description: 'matches /injected-a to to-inject.astro',
 		url: '/injected-a',
 		h1: 'to-inject.astro',
-		scriptContent: 'console.log(`to-inject.astro`);',
+		scriptContent: 'console.log("to-inject.astro");',
 	},
 	{
 		description: 'matches /injected-b to to-inject.astro',
 		url: '/injected-b',
 		h1: 'to-inject.astro',
-		scriptContent: 'console.log(`to-inject.astro`);',
+		scriptContent: 'console.log("to-inject.astro");',
 	},
 	{
 		description: 'matches /dynamic-a/id-1 to [id].astro',
