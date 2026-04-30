@@ -67,8 +67,8 @@ function importEditorIntegration<T>(packageName: string, fromPath: string): T | 
 	return undefined;
 }
 
-type SvelteIntegration = { toTSX: (code: string, className: string) => string };
-type VueIntegration = { toTSX: (code: string, className: string) => string };
+type SvelteIntegration = { toTSX(code: string, className: string): string };
+type VueIntegration = { toTSX(code: string, className: string): string };
 
 export function importSvelteIntegration(fromPath: string): SvelteIntegration | undefined {
 	return importEditorIntegration('@astrojs/svelte', fromPath);
