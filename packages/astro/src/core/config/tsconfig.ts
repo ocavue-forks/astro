@@ -76,12 +76,12 @@ export async function loadTSConfig(root: string | undefined): Promise<TSConfigRe
 	let tsconfigPath: string | undefined;
 
 	// Find the json file path. Prefer tsconfig.json over jsconfig.json.
-  for (const configName of ['tsconfig.json', 'jsconfig.json']) {
-    const possiblePath = join(safeCwd, configName);
-    if (existsSync(possiblePath)) {
+	for (const configName of ['tsconfig.json', 'jsconfig.json']) {
+		const possiblePath = join(safeCwd, configName);
+		if (existsSync(possiblePath)) {
 			tsconfigPath = possiblePath;
 			break;
-    }
+		}
 	}
 	if (!tsconfigPath) {
 		return {

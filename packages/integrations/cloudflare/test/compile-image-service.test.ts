@@ -12,13 +12,25 @@ describe('CompileImageService', () => {
 	});
 
 	describe('dev', () => {
-		let devServer: DevServer;
+		let devServer: DevServer | undefined;
 		before(async () => {
-			devServer = await fixture.startDevServer();
+			try {
+				devServer = await fixture.startDevServer();
+			} catch (error) {
+				console.error('Error starting dev server:', error);
+				throw error;
+			}
 		});
 
 		after(async () => {
-			await devServer.stop();
+			try {
+				if (devServer) {
+					await devServer.stop();
+				}
+			} catch (error) {
+				console.error('Error stopping dev server:', error);
+				throw error;
+			}
 		});
 
 		// In dev, the compile service falls back to passthrough because sharp cannot run in workerd. Images are served unoptimized
