@@ -22,21 +22,6 @@ type ActionInputErrorResponse = {
 	fields: Record<string, string[] | undefined>;
 };
 
-// Error response shapes emitted by `serializeActionResult` in
-// src/actions/runtime/server.ts.
-type ActionErrorResponse = {
-	type: 'AstroActionError';
-	code: string;
-	message: string;
-	status: number;
-};
-
-type ActionInputErrorResponse = {
-	type: 'AstroActionInputError';
-	issues: Array<{ path: Array<string | number>; message: string; code: string }>;
-	fields: Record<string, string[] | undefined>;
-};
-
 describe('Astro Actions', () => {
 	let fixture: Fixture;
 	before(async () => {

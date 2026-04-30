@@ -109,7 +109,6 @@ export const ASTRO_CONFIG_DEFAULTS = {
 		clientPrerender: false,
 		contentIntellisense: false,
 		chromeDevtoolsWorkspace: false,
-		rustCompiler: false,
 		queuedRendering: {
 			enabled: false,
 		},
