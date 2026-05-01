@@ -39,7 +39,7 @@
     "typecheck:tests": "tsc --build tsconfig.test.json"
   },
   "dependencies": {
-    "@sveltejs/vite-plugin-svelte": "^6.2.4",
+    "@sveltejs/vite-plugin-svelte": "^7.0.0",
     "svelte2tsx": "^0.7.52",
     "vite": "^8.0.8",
     "vitefu": "^1.1.2"
