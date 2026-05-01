@@ -6,25 +6,58 @@ import { type DevServer, type Fixture, loadFixture, type PreviewServer } from '.
 describe('CompileImageService', () => {
 	let fixture: Fixture;
 	before(async () => {
+		console.warn('='.repeat(70));
+		console.warn("Starting loadFixture './fixtures/compile-image-service/'");
+
 		fixture = await loadFixture({
 			root: './fixtures/compile-image-service/',
 		});
+
+		console.warn("Finish loadFixture './fixtures/compile-image-service/'");
+		console.warn('='.repeat(70));
 	});
 
 	describe('dev', () => {
-		let devServer: DevServer;
+		let devServer: DevServer | undefined;
 		before(async () => {
-			devServer = await fixture.startDevServer();
+			try {
+				console.warn('='.repeat(70));
+				console.warn('Starting startDevServer');
+				devServer = await fixture.startDevServer();
+				console.warn('Finish startDevServer');
+				console.warn('='.repeat(70));
+			} catch (error) {
+				console.error('Error starting dev server:', error);
+				throw error;
+			}
 		});
 
 		after(async () => {
-			await devServer.stop();
+			try {
+				if (devServer) {
+					await devServer.stop();
+				}
+			} catch (error) {
+				console.error('Error stopping dev server:', error);
+				throw error;
+			}
 		});
 
 		// In dev, the compile service falls back to passthrough because sharp cannot run in workerd. Images are served unoptimized
 		// through the /_image endpoint.
 		it('returns 200 for local images via /_image endpoint', async () => {
-			const html = await fixture.fetch('/blog/post').then((res) => res.text());
+			let html = '';
+
+			try {
+				console.warn('='.repeat(70));
+				console.warn('Starting fixture.fetch');
+				html = await fixture.fetch('/blog/post').then((res) => res.text());
+				console.warn('Finish fixture.fetch');
+				console.warn('='.repeat(70));
+			} catch (error) {
+				console.error('Error getting html:', error);
+				throw error;
+			}
 			const $ = cheerio.load(html);
 			const src = $('img').attr('src')!;
 			assert.ok(
