@@ -96,7 +96,9 @@ export default async function mergeFix({ init, payload }: FlueContext) {
 				: 'chore: update main-to-next merge';
 
 		await session.shell(`git commit -m ${JSON.stringify(commitMsg)}`, { commands: [git] });
-		const pushResult = await session.shell(`git push origin ${branch}`, { commands: [gitWithAuth] });
+		const pushResult = await session.shell(`git push origin ${branch}`, {
+			commands: [gitWithAuth],
+		});
 		console.info('push result:', pushResult);
 
 		if (pushResult.exitCode !== 0) {

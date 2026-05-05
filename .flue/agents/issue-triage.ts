@@ -262,7 +262,9 @@ export default async function ({ init, payload }: FlueContext) {
 					{ commands: [git] },
 				);
 			}
-			const pushResult = await session.shell(`git push -f origin ${branch}`, { commands: [gitWithAuth] });
+			const pushResult = await session.shell(`git push -f origin ${branch}`, {
+				commands: [gitWithAuth],
+			});
 			console.info('push result:', pushResult);
 			isPushed = pushResult.exitCode === 0;
 		}
