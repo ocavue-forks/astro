@@ -61,6 +61,7 @@ peerDependencyRules:
 # Prevent installation of packages where trust level decreases
 trustPolicy: 'no-downgrade'
 trustPolicyExclude:
+  - '@vercel/*'
   # Netlify dependency they need to update: https://github.com/netlify/primitives/pull/585
   - 'chokidar@4.0.3'
   # Netlify packages that do not have trusted publishing enabled on npm
